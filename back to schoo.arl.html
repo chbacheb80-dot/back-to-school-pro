@@ -1,0 +1,2149 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#6C63FF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BSP PRO">
+<title>🎒 Back to School PRO 5.0</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%236C63FF'/><stop offset='1' stop-color='%233F3D92'/></linearGradient></defs><rect width='512' height='512' rx='115' fill='url(%23g)'/><text x='256' y='360' font-size='260' text-anchor='middle'>🎒</text></svg>">
+
+<style>
+:root {
+  --primary: #6C63FF;
+  --primary-dark: #3F3D92;
+  --primary-light: #A5A0FF;
+  --accent: #FF6584;
+  --success: #00C9A7;
+  --warning: #FFB020;
+  --danger: #FF4757;
+  --info: #00B8D9;
+  --bg: #F7F8FC;
+  --surface: #FFFFFF;
+  --surface-2: #F0F2F9;
+  --text: #1A1D2E;
+  --text-muted: #6B7280;
+  --border: #E5E7EB;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
+  --shadow-xl: 0 20px 50px rgba(108,99,255,0.25);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --side-width: 68px;
+}
+[data-theme="dark"] {
+  --bg: #0F1220; --surface: #1A1D2E; --surface-2: #252942;
+  --text: #F3F4F6; --text-muted: #9CA3AF; --border: #2D3250;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3); --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.5);
+}
+[data-theme="sunset"] {
+  --primary: #FF6B6B; --primary-dark: #C92A2A; --primary-light: #FFA8A8; --accent: #FFB020;
+  --bg: #FFF5F5; --surface: #FFFFFF; --surface-2: #FFEBEB; --text: #2B1B1B; --border: #FFE3E3;
+}
+[data-theme="ocean"] {
+  --primary: #0077B6; --primary-dark: #023E8A; --primary-light: #48CAE4; --accent: #00B8D9;
+  --bg: #F0F8FF; --surface: #FFFFFF; --surface-2: #E0F2FE; --text: #03045E; --border: #CAF0F8;
+}
+[data-theme="forest"] {
+  --primary: #2D6A4F; --primary-dark: #1B4332; --primary-light: #74C69D; --accent: #F77F00;
+  --bg: #F1FAEE; --surface: #FFFFFF; --surface-2: #E9F5DB; --text: #1B4332; --border: #D8F3DC;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { overflow-x: hidden; width: 100%; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, 'Segoe UI', Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  /* ✅ مساحة للشريط الجانبي من اليمين */
+  padding-right: var(--side-width);
+  transition: background var(--transition), color var(--transition), padding var(--transition);
+  -webkit-overflow-scrolling: touch;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+input, textarea, select { font-family: inherit; }
+
+/* SPLASH */
+.splash { position: fixed; inset: 0; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s, visibility 0.5s; }
+.splash.hide { opacity: 0; visibility: hidden; }
+.splash-icon { font-size: 5rem; margin-bottom: 20px; animation: bounceIn 0.8s ease; }
+.splash h1 { color: white; font-size: 1.5rem; margin-bottom: 8px; }
+.splash p { color: rgba(255,255,255,0.8); font-size: 0.9rem; }
+.splash-loader { margin-top: 30px; width: 200px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden; }
+.splash-loader::after { content: ''; display: block; height: 100%; width: 40%; background: white; border-radius: 2px; animation: loading 1.5s ease infinite; }
+@keyframes loading { 0% { transform: translateX(-100%); } 100% { transform: translateX(350%); } }
+@keyframes bounceIn { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.2); } 100% { transform: scale(1); opacity: 1; } }
+
+/* ===== SIDE NAV (الشريط الجانبي) ===== */
+.side-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--side-width);
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0;
+  padding-top: calc(8px + env(safe-area-inset-top, 0));
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0));
+  z-index: 500;
+  box-shadow: -2px 0 15px rgba(0,0,0,0.04);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+.side-nav::-webkit-scrollbar { display: none; }
+
+.side-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(108,99,255,0.3);
+}
+
+.side-item {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  transition: all var(--transition);
+  margin-bottom: 4px;
+  flex-shrink: 0;
+  position: relative;
+  padding: 4px 2px;
+}
+.side-item .ico { font-size: 1.25rem; line-height: 1; }
+.side-item .lbl { font-size: 0.5rem; letter-spacing: 0; }
+.side-item:active { transform: scale(0.92); background: var(--surface-2); }
+.side-item.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  box-shadow: 0 4px 12px rgba(108,99,255,0.35);
+}
+.side-item.active .ico { transform: scale(1.1); }
+
+.side-divider {
+  width: 30px;
+  height: 1px;
+  background: var(--border);
+  margin: 6px 0;
+  flex-shrink: 0;
+}
+
+/* ===== HEADER ===== */
+.app-header {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  padding: 14px 18px;
+  padding-top: calc(14px + env(safe-area-inset-top, 0));
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-lg);
+}
+.header-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.header-left { display: flex; align-items: center; gap: 10px; }
+.header-emoji { font-size: 1.4rem; }
+.header-titles h1 { font-size: 1rem; font-weight: 700; }
+.header-titles p { font-size: 0.65rem; opacity: 0.85; }
+.header-actions { display: flex; gap: 6px; }
+.hd-icon-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; color: white;
+  transition: all var(--transition);
+  backdrop-filter: blur(10px);
+}
+.hd-icon-btn:active { transform: scale(0.9); }
+
+.xp-bar-wrap {
+  margin-top: 10px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.7rem;
+}
+.xp-label { font-weight: 700; }
+.xp-track { flex: 1; height: 5px; background: rgba(255,255,255,0.2); border-radius: 3px; overflow: hidden; }
+.xp-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #FFD93D, #FF8A00); border-radius: 3px; transition: width 0.8s; }
+
+/* ===== MAIN CONTAINER ===== */
+.app-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 14px;
+  /* ✅ لا حاجة لحشوة سفلية كبيرة، فقط مساحة معقولة */
+  padding-bottom: 30px;
+}
+
+.page { display: none; animation: fadeUp 0.4s ease; }
+.page.active { display: block; padding-bottom: 20px; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+.card { background: var(--surface); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+.card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.card-icon { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; }
+.card-title { font-size: 0.95rem; font-weight: 700; }
+.card-sub { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; }
+
+.hero { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border-radius: var(--radius-lg); padding: 20px; margin-bottom: 12px; position: relative; overflow: hidden; box-shadow: var(--shadow-xl); }
+.hero::before { content: ''; position: absolute; top: -50%; right: -20%; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%; }
+.hero-content { position: relative; }
+.hero h1 { font-size: 1.3rem; margin-bottom: 4px; }
+.hero .hero-date { font-size: 0.75rem; opacity: 0.9; }
+.hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; position: relative; }
+.hero-stat { background: rgba(255,255,255,0.15); border-radius: 12px; padding: 10px 6px; text-align: center; backdrop-filter: blur(10px); }
+.hero-stat-val { font-size: 1.2rem; font-weight: 800; }
+.hero-stat-label { font-size: 0.6rem; opacity: 0.9; margin-top: 2px; }
+
+.stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px; }
+.stat-card { background: var(--surface); border-radius: var(--radius); padding: 12px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); display: flex; flex-direction: column; }
+.stat-ico { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; color: white; margin-bottom: 6px; }
+.stat-ico.purple { background: linear-gradient(135deg, #8B5CF6, #6C63FF); }
+.stat-ico.green { background: linear-gradient(135deg, #00C9A7, #00897B); }
+.stat-ico.orange { background: linear-gradient(135deg, #FFB020, #FF8A00); }
+.stat-ico.pink { background: linear-gradient(135deg, #FF6584, #C92A2A); }
+.stat-ico.blue { background: linear-gradient(135deg, #00B8D9, #0077B6); }
+.stat-val { font-size: 1.2rem; font-weight: 800; }
+.stat-label { font-size: 0.65rem; color: var(--text-muted); margin-top: 2px; }
+
+.field { margin-bottom: 10px; }
+.field label { display: block; font-size: 0.72rem; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+.field input, .field textarea, .field select { width: 100%; padding: 10px 12px; background: var(--surface-2); border: 2px solid transparent; border-radius: var(--radius-sm); font-size: 0.9rem; color: var(--text); transition: all var(--transition); box-sizing: border-box; }
+.field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: var(--primary); background: var(--surface); box-shadow: 0 0 0 3px rgba(108,99,255,0.1); }
+.field textarea { min-height: 70px; resize: vertical; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.btn { padding: 10px 16px; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.8rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: all var(--transition); white-space: nowrap; }
+.btn:active { transform: scale(0.96); }
+.btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: var(--shadow-md); }
+.btn-success { background: linear-gradient(135deg, #00C9A7, #00897B); color: white; }
+.btn-warning { background: linear-gradient(135deg, #FFB020, #FF8A00); color: white; }
+.btn-danger { background: linear-gradient(135deg, #FF4757, #C92A2A); color: white; }
+.btn-ghost { background: var(--surface-2); color: var(--text); }
+.btn-sm { padding: 6px 12px; font-size: 0.72rem; }
+.btn-full { width: 100%; }
+
+.task { display: flex; align-items: center; gap: 10px; padding: 11px; background: var(--surface); border-radius: var(--radius-sm); margin-bottom: 8px; border-right: 4px solid var(--primary); box-shadow: var(--shadow-sm); animation: slideIn 0.3s ease; }
+@keyframes slideIn { from { opacity: 0; transform: translateX(-15px); } to { opacity: 1; transform: translateX(0); } }
+.task.done { opacity: 0.55; border-right-color: var(--success); }
+.task.done .task-text { text-decoration: line-through; }
+.task.important { border-right-color: var(--danger); }
+.task-check { width: 22px; height: 22px; flex-shrink: 0; border: 2px solid var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: var(--surface); color: white; font-size: 0.8rem; font-weight: 800; transition: all var(--transition); }
+.task-check.checked { background: var(--success); border-color: var(--success); }
+.task-body { flex: 1; min-width: 0; }
+.task-text { font-size: 0.85rem; font-weight: 600; word-break: break-word; }
+.task-meta { font-size: 0.68rem; color: var(--text-muted); margin-top: 2px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.task-actions { display: flex; gap: 2px; flex-shrink: 0; }
+.task-btn { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: var(--text-muted); transition: all var(--transition); }
+.task-btn:active { background: var(--surface-2); }
+
+.progress-bar { height: 7px; background: var(--surface-2); border-radius: 4px; overflow: hidden; margin: 6px 0; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 4px; transition: width 0.6s; }
+
+/* Sheet & Overlay */
+.sheet-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s; }
+.sheet-overlay.active { opacity: 1; visibility: visible; }
+.sheet { position: fixed; bottom: 0; left: 0; right: var(--side-width); background: var(--surface); border-radius: 24px 24px 0 0; padding: 20px; padding-bottom: calc(40px + env(safe-area-inset-bottom, 0)); max-height: 80vh; overflow-y: auto; transform: translateY(100%); transition: transform 0.35s; z-index: 1001; }
+.sheet.active { transform: translateY(0); }
+.sheet-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 16px; }
+.sheet h3 { font-size: 1rem; margin-bottom: 16px; }
+.sheet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.sheet-item { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 6px; background: var(--surface-2); border-radius: var(--radius-sm); font-size: 0.72rem; font-weight: 600; transition: all var(--transition); }
+.sheet-item:active { transform: scale(0.95); }
+.sheet-item .ico { font-size: 1.4rem; }
+
+/* Calendar */
+.cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.cal-nav-btn { width: 34px; height: 34px; border-radius: 10px; background: var(--surface-2); display: flex; align-items: center; justify-content: center; font-size: 0.95rem; font-weight: 700; }
+.cal-title { font-size: 0.95rem; font-weight: 700; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; width: 100%; }
+.cal-head { text-align: center; padding: 5px 2px; font-weight: 700; font-size: 0.6rem; color: var(--text-muted); overflow: hidden; }
+.cal-head.weekend { color: var(--accent); }
+.cal-cell { display: flex; align-items: center; justify-content: center; min-height: 36px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; background: var(--surface-2); cursor: pointer; position: relative; padding: 4px 2px; }
+.cal-cell.weekend { color: var(--accent); background: rgba(255,101,132,0.08); }
+.cal-cell.empty { background: transparent; cursor: default; }
+.cal-cell.today { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; font-weight: 800; }
+.cal-cell.selected { outline: 2px solid var(--primary); outline-offset: -2px; }
+.cal-cell .dot { position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+
+/* Timer */
+.timer-wrap { text-align: center; padding: 14px 0; }
+.timer-display { font-size: 3.5rem; font-weight: 800; color: var(--primary); font-variant-numeric: tabular-nums; letter-spacing: -2px; margin: 10px 0; text-shadow: 0 4px 20px rgba(108,99,255,0.25); }
+.timer-status { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px; }
+.timer-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.timer-presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 14px; }
+.timer-preset { padding: 9px 4px; border-radius: var(--radius-sm); background: var(--surface-2); font-size: 0.72rem; font-weight: 700; transition: all var(--transition); }
+.timer-preset.active { background: var(--primary); color: white; }
+
+/* Habits */
+.habits-wrap { overflow-x: auto; padding-bottom: 4px; }
+.habit-row { display: grid; grid-template-columns: 80px repeat(7, minmax(34px, 1fr)); gap: 4px; margin-bottom: 4px; align-items: center; min-width: 300px; }
+.habit-label { font-size: 0.72rem; font-weight: 600; padding: 6px 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.habit-head { text-align: center; font-size: 0.6rem; color: var(--text-muted); font-weight: 700; padding: 4px 2px; }
+.habit-head.weekend { color: var(--accent); }
+.habit-cell { aspect-ratio: 1; border-radius: 8px; background: var(--surface-2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; color: white; transition: all var(--transition); }
+.habit-cell.done { background: linear-gradient(135deg, var(--success), #00897B); }
+.habit-cell.today { box-shadow: 0 0 0 2px var(--primary) inset; }
+
+/* Water */
+.water-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 14px 0; }
+.water-cup { aspect-ratio: 1; border-radius: 50%; background: var(--surface-2); border: 3px solid var(--info); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: all var(--transition); }
+.water-cup.filled { background: linear-gradient(135deg, var(--info), #0077B6); border-color: var(--info); }
+
+/* Flashcard */
+.flashcard { width: 100%; min-height: 180px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border-radius: var(--radius-lg); padding: 22px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 1.05rem; font-weight: 700; cursor: pointer; box-shadow: var(--shadow-xl); margin: 12px 0; transition: all 0.4s; word-break: break-word; position: relative; overflow: hidden; }
+.flashcard::before { content: ''; position: absolute; top: -50%; right: -30%; width: 180px; height: 180px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+.flashcard.flipped { background: linear-gradient(135deg, var(--success), #00897B); }
+
+/* Chart */
+.chart { display: flex; align-items: flex-end; justify-content: space-around; height: 130px; padding: 14px 6px 26px; gap: 4px; background: var(--surface-2); border-radius: var(--radius); }
+.chart-bar { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; height: 100%; justify-content: flex-end; }
+.chart-fill { width: 100%; max-width: 28px; background: linear-gradient(to top, var(--primary), var(--primary-light)); border-radius: 6px 6px 3px 3px; transition: height 0.8s; min-height: 4px; }
+.chart-fill.weekend { background: linear-gradient(to top, var(--accent), #FF9EAE); }
+.chart-val { font-size: 0.6rem; font-weight: 700; color: var(--text-muted); }
+.chart-label { font-size: 0.6rem; font-weight: 600; color: var(--text-muted); }
+
+/* Chip */
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: var(--radius-full); font-size: 0.65rem; font-weight: 700; }
+.chip-primary { background: rgba(108,99,255,0.12); color: var(--primary); }
+.chip-success { background: rgba(0,201,167,0.12); color: var(--success); }
+.chip-warning { background: rgba(255,176,32,0.12); color: var(--warning); }
+.chip-danger { background: rgba(255,71,87,0.12); color: var(--danger); }
+.chip-info { background: rgba(0,184,217,0.12); color: var(--info); }
+
+/* Empty */
+.empty { text-align: center; padding: 26px 18px; color: var(--text-muted); }
+.empty-emoji { font-size: 2.5rem; margin-bottom: 8px; opacity: 0.5; }
+.empty-text { font-size: 0.8rem; }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: calc(var(--side-width) + 20px);
+  left: 20px;
+  max-width: 400px;
+  margin-right: auto;
+  background: var(--text);
+  color: var(--surface);
+  padding: 12px 20px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-lg);
+  z-index: 2000;
+  opacity: 0;
+  transform: translateY(100px);
+  transition: all 0.4s;
+  text-align: center;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* Modal */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 1500; padding: 20px; padding-right: calc(var(--side-width) + 20px); }
+.modal-overlay.active { display: flex; }
+.modal { background: var(--surface); border-radius: var(--radius-lg); padding: 20px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; }
+
+/* Confetti */
+.confetti { position: fixed; top: -10px; width: 10px; height: 10px; z-index: 9999; pointer-events: none; animation: fall linear forwards; }
+@keyframes fall { to { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+
+/* Schedule */
+.schedule-grid { display: grid; grid-template-columns: 42px repeat(7, minmax(40px, 1fr)); gap: 3px; font-size: 0.65rem; overflow-x: auto; }
+.sch-cell { padding: 8px 2px; text-align: center; background: var(--surface-2); border-radius: 6px; font-weight: 600; cursor: pointer; transition: all var(--transition); min-height: 38px; display: flex; align-items: center; justify-content: center; word-break: break-word; overflow: hidden; font-size: 0.6rem; }
+.sch-cell.head { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; font-weight: 700; cursor: default; }
+.sch-cell.head.weekend { background: linear-gradient(135deg, var(--accent), #C92A2A); }
+.sch-cell.time { background: var(--surface); color: var(--text-muted); font-size: 0.55rem; cursor: default; }
+.sch-cell.filled { background: linear-gradient(135deg, var(--primary-light), var(--primary)); color: white; }
+
+/* Sounds */
+.sounds-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.sound-btn { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 16px 8px; background: var(--surface-2); border-radius: var(--radius); transition: all var(--transition); font-weight: 600; font-size: 0.75rem; }
+.sound-btn .ico { font-size: 1.8rem; }
+.sound-btn.active { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; }
+
+/* Focus Mode */
+body.focus-mode .app-header, body.focus-mode .side-nav { opacity: 0.3; transition: opacity 0.3s; }
+.focus-overlay { position: fixed; inset: 0; background: linear-gradient(135deg, #0F1220, #1A1D2E); z-index: 800; display: none; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 20px; }
+.focus-overlay.active { display: flex; }
+.focus-timer { font-size: 4.5rem; font-weight: 800; font-variant-numeric: tabular-nums; color: white; margin-bottom: 20px; letter-spacing: -2px; }
+.focus-label { font-size: 0.85rem; opacity: 0.8; margin-bottom: 30px; }
+.focus-exit { padding: 12px 24px; border-radius: 100px; background: rgba(255,255,255,0.15); color: white; font-weight: 700; backdrop-filter: blur(10px); }
+
+/* Summary */
+.summary-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--surface-2); border-radius: var(--radius-sm); margin-bottom: 8px; }
+.summary-item .ico { font-size: 1.4rem; }
+.summary-item .body { flex: 1; }
+.summary-item .body .val { font-size: 1rem; font-weight: 800; color: var(--primary); }
+.summary-item .body .lbl { font-size: 0.7rem; color: var(--text-muted); }
+
+/* Responsive */
+@media (max-width: 380px) {
+  :root { --side-width: 58px; }
+  .side-item { width: 46px; height: 48px; }
+  .side-item .lbl { font-size: 0.45rem; }
+  .side-logo { width: 38px; height: 38px; font-size: 1.15rem; }
+  .timer-display { font-size: 3rem; }
+  .hero h1 { font-size: 1.1rem; }
+  .focus-timer { font-size: 3.5rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="splash" id="splash">
+  <div class="splash-icon">🎒</div>
+  <h1>Back to School PRO</h1>
+  <p>مخططك الذكي المتطور</p>
+  <div class="splash-loader"></div>
+</div>
+
+<!-- ========== SIDE NAVIGATION ========== -->
+<nav class="side-nav" id="sideNav">
+  <div class="side-logo">🎒</div>
+  <button class="side-item active" data-page="home" onclick="goTo('home')">
+    <span class="ico">🏠</span>
+    <span class="lbl">الرئيسية</span>
+  </button>
+  <button class="side-item" data-page="tasks" onclick="goTo('tasks')">
+    <span class="ico">✅</span>
+    <span class="lbl">المهام</span>
+  </button>
+  <button class="side-item" data-page="calendar" onclick="goTo('calendar')">
+    <span class="ico">📅</span>
+    <span class="lbl">التقويم</span>
+  </button>
+  <button class="side-item" data-page="timer" onclick="goTo('timer')">
+    <span class="ico">⏱️</span>
+    <span class="lbl">تركيز</span>
+  </button>
+  <div class="side-divider"></div>
+  <button class="side-item" onclick="openSheet()">
+    <span class="ico">☰</span>
+    <span class="lbl">المزيد</span>
+  </button>
+  <button class="side-item" onclick="cycleTheme()">
+    <span class="ico">🎨</span>
+    <span class="lbl">الثيم</span>
+  </button>
+  <button class="side-item" onclick="openModal('settingsModal')">
+    <span class="ico">⚙️</span>
+    <span class="lbl">إعدادات</span>
+  </button>
+</nav>
+
+<!-- ========== HEADER ========== -->
+<header class="app-header">
+  <div class="header-row">
+    <div class="header-left">
+      <div class="header-emoji">🎒</div>
+      <div class="header-titles">
+        <h1 id="headerTitle">Back to School PRO</h1>
+        <p id="headerSub">مخططك الذكي</p>
+      </div>
+    </div>
+  </div>
+  <div class="xp-bar-wrap">
+    <span class="xp-label">⭐ Lvl <span id="lvlNum">1</span></span>
+    <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
+    <span id="xpText" style="opacity:0.9;">0/100</span>
+  </div>
+</header>
+
+<!-- ========== MAIN CONTAINER ========== -->
+<div class="app-container">
+
+  <div class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-content">
+        <h1 id="heroGreeting">مرحبًا! 👋</h1>
+        <div class="hero-date" id="heroDate"></div>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="hero-stat-val" id="hsTasks">0</div><div class="hero-stat-label">مهام اليوم</div></div>
+          <div class="hero-stat"><div class="hero-stat-val" id="hsDone">0</div><div class="hero-stat-label">مكتملة</div></div>
+          <div class="hero-stat"><div class="hero-stat-val" id="hsStreak">0</div><div class="hero-stat-label">أيام متواصلة</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">📊</div>
+        <div><div class="card-title">نظرة سريعة</div><div class="card-sub">ملخص اليوم</div></div>
+      </div>
+      <div class="stats-grid" style="margin-bottom:0;">
+        <div class="stat-card"><div class="stat-ico purple">🎯</div><div class="stat-val" id="sGoals">0</div><div class="stat-label">أهداف نشطة</div></div>
+        <div class="stat-card"><div class="stat-ico blue">💧</div><div class="stat-val" id="sWater">0/8</div><div class="stat-label">أكواب الماء</div></div>
+        <div class="stat-card"><div class="stat-ico orange">🔥</div><div class="stat-val" id="sPomo">0</div><div class="stat-label">جلسات تركيز</div></div>
+        <div class="stat-card"><div class="stat-ico green">🏆</div><div class="stat-val" id="sAvg">-</div><div class="stat-label">المعدل / 20</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">📈</div>
+        <div><div class="card-title">نشاط الأسبوع</div><div class="card-sub">الجمعة والسبت عطلة</div></div>
+      </div>
+      <div class="chart" id="weekChart"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">⚡</div>
+        <div><div class="card-title">إجراءات سريعة</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <button class="btn btn-primary" onclick="goTo('tasks')">✅ مهمة</button>
+        <button class="btn btn-success" onclick="goTo('timer')">⏱️ تركيز</button>
+        <button class="btn btn-warning" onclick="enterFocusMode()">🎯 تركيز عميق</button>
+        <button class="btn btn-ghost" onclick="goTo('notes')">📝 ملاحظة</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">💡</div>
+        <div><div class="card-title">نصيحة اليوم</div></div>
+      </div>
+      <p id="dailyTip" style="line-height:1.7;font-size:0.85rem;"></p>
+      <button class="btn btn-primary btn-sm btn-full" onclick="newTip()" style="margin-top:10px;">🔄 نصيحة أخرى</button>
+    </div>
+  </div>
+
+  <div class="page" id="page-tasks">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">✅</div>
+        <div><div class="card-title">المهام</div><div class="card-sub" id="tasksCount">0 مهمة</div></div>
+      </div>
+      <div class="field"><input type="text" id="taskInput" placeholder="أضف مهمة جديدة..."></div>
+      <div class="field-row">
+        <div class="field" style="margin-bottom:8px;">
+          <select id="taskCat">
+            <option value="study">📚 دراسة</option>
+            <option value="homework">📝 واجب</option>
+            <option value="reading">📖 قراءة</option>
+            <option value="exercise">✏️ تمارين</option>
+            <option value="other">📌 أخرى</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:8px;">
+          <select id="taskPri">
+            <option value="normal">عادية</option>
+            <option value="high">🔴 عالية</option>
+            <option value="low">🟢 منخفضة</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="addTask()">➕ إضافة مهمة</button>
+      <div class="progress-bar" style="margin-top:12px;"><div class="progress-fill" id="taskProgress" style="width:0%"></div></div>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:12px;background:var(--surface-2);padding:4px;border-radius:12px;">
+      <button class="btn btn-sm btn-primary" style="flex:1;" id="fAll" onclick="filterTasks('all')">الكل</button>
+      <button class="btn btn-sm btn-ghost" style="flex:1;" id="fActive" onclick="filterTasks('active')">قيد التنفيذ</button>
+      <button class="btn btn-sm btn-ghost" style="flex:1;" id="fDone" onclick="filterTasks('done')">مكتملة</button>
+    </div>
+    <div id="tasksList"></div>
+  </div>
+
+  <div class="page" id="page-calendar">
+    <div class="card">
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="changeMonth(-1)">◀</button>
+        <div class="cal-title" id="calTitle"></div>
+        <button class="cal-nav-btn" onclick="changeMonth(1)">▶</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">📝</div>
+        <div><div class="card-title">أحداث اليوم</div><div class="card-sub" id="calSelDate"></div></div>
+      </div>
+      <div class="field"><input type="text" id="eventTitle" placeholder="عنوان الحدث..."></div>
+      <button class="btn btn-primary btn-sm btn-full" onclick="addEvent()">➕ إضافة حدث</button>
+      <div id="eventsList" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-timer">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">⏱️</div>
+        <div><div class="card-title">مؤقت التركيز</div><div class="card-sub">تقنية بومودورو</div></div>
+      </div>
+      <div class="timer-wrap">
+        <div class="timer-display" id="timerDisplay">25:00</div>
+        <div class="timer-status" id="timerStatus">جاهز للتركيز</div>
+        <div class="timer-btns">
+          <button class="btn btn-success" onclick="startTimer()" id="startBtn">▶️ ابدأ</button>
+          <button class="btn btn-warning" onclick="pauseTimer()">⏸️ إيقاف</button>
+          <button class="btn btn-danger" onclick="resetTimer()">🔄 إعادة</button>
+        </div>
+        <div class="timer-presets" id="timerPresets">
+          <button class="timer-preset active" onclick="setTimerPreset(this, 25)">25 د</button>
+          <button class="timer-preset" onclick="setTimerPreset(this, 5)">5 د</button>
+          <button class="timer-preset" onclick="setTimerPreset(this, 15)">15 د</button>
+          <button class="timer-preset" onclick="setTimerPreset(this, 50)">50 د</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">📊</div>
+        <div><div class="card-title">جلسات اليوم</div><div class="card-sub"><span id="todaySessions">0</span> جلسة</div></div>
+      </div>
+      <div id="sessionsList"></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-schedule">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">📅</div>
+        <div><div class="card-title">جدول الحصص</div><div class="card-sub">اضغط على أي خلية للتعديل</div></div>
+      </div>
+      <div class="schedule-grid" id="scheduleGrid"></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-homework">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">📚</div>
+        <div><div class="card-title">الواجبات المنزلية</div><div class="card-sub" id="hwCount">0 واجب</div></div>
+      </div>
+      <div class="field"><input type="text" id="hwSubject" placeholder="المادة..."></div>
+      <div class="field"><input type="text" id="hwDesc" placeholder="وصف الواجب..."></div>
+      <div class="field"><label>⏰ تاريخ التسليم</label><input type="date" id="hwDue"></div>
+      <button class="btn btn-primary btn-full" onclick="addHomework()">➕ إضافة واجب</button>
+    </div>
+    <div id="homeworkList"></div>
+  </div>
+
+  <div class="page" id="page-gpa">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">🎯</div>
+        <div><div class="card-title">حاسبة المعدل</div><div class="card-sub">اعرف ما تحتاجه للنجاح</div></div>
+      </div>
+      <div class="field"><label>🎯 المعدل المطلوب</label><input type="number" id="gpaTarget" placeholder="12" min="0" max="20" step="0.5" value="12"></div>
+      <div class="field"><label>📊 معدلك الحالي</label><input type="number" id="gpaCurrent" placeholder="11.5" min="0" max="20" step="0.5"></div>
+      <div class="field"><label>📝 عدد المواد المتبقية</label><input type="number" id="gpaRemaining" placeholder="3" min="1" value="3"></div>
+      <button class="btn btn-primary btn-full" onclick="calculateGPA()">🧮 احسب</button>
+      <div id="gpaResult" style="margin-top:14px;"></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-attendance">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">📊</div>
+        <div><div class="card-title">تتبع الحضور</div><div class="card-sub">سجل حضورك وغيابك</div></div>
+      </div>
+      <div class="field"><input type="text" id="attSubject" placeholder="اسم المادة..."></div>
+      <div class="field-row">
+        <button class="btn btn-success" onclick="addAttendance('present')">✓ حاضر</button>
+        <button class="btn btn-danger" onclick="addAttendance('absent')">✗ غائب</button>
+      </div>
+      <div id="attendanceSummary" style="margin-top:14px;"></div>
+    </div>
+    <div id="attendanceList"></div>
+  </div>
+
+  <div class="page" id="page-sounds">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">🎵</div>
+        <div><div class="card-title">أصوات الاسترخاء</div><div class="card-sub">ساعد عقلك على التركيز</div></div>
+      </div>
+      <div class="sounds-grid" id="soundsGrid"></div>
+      <div style="margin-top:14px;">
+        <label style="font-size:0.75rem;color:var(--text-muted);display:block;margin-bottom:6px;">🔉 مستوى الصوت</label>
+        <input type="range" id="soundVolume" min="0" max="100" value="30" style="width:100%;accent-color:var(--primary);" oninput="setVolume(this.value)">
+      </div>
+      <button class="btn btn-danger btn-full" onclick="stopAllSounds()" style="margin-top:12px;">⏹️ إيقاف كل الأصوات</button>
+    </div>
+  </div>
+
+  <div class="page" id="page-summary">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">📈</div>
+        <div><div class="card-title">ملخص ذكي</div><div class="card-sub" id="summaryDate"></div></div>
+      </div>
+      <div id="summaryContent"></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-habits">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">📊</div>
+        <div><div class="card-title">متتبع العادات</div><div class="card-sub">الجمعة والسبت عطلة</div></div>
+      </div>
+      <div class="habits-wrap" id="habitsWrap"></div>
+      <div class="field" style="margin-top:12px;"><input type="text" id="habitInput" placeholder="اسم عادة جديدة..."></div>
+      <button class="btn btn-primary btn-sm btn-full" onclick="addHabit()">➕ إضافة عادة</button>
+    </div>
+  </div>
+
+  <div class="page" id="page-water">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">💧</div>
+        <div><div class="card-title">شرب الماء</div><div class="card-sub">الهدف: 8 أكواب يوميًا</div></div>
+      </div>
+      <div class="water-grid" id="waterGrid"></div>
+      <p style="text-align:center;font-weight:700;font-size:1rem;" id="waterText">0 / 8 أكواب</p>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">📈</div>
+        <div><div class="card-title">الأسبوع</div></div>
+      </div>
+      <div class="chart" id="waterChart"></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-flashcards">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">🃏</div>
+        <div><div class="card-title">البطاقات التعليمية</div><div class="card-sub" id="fcCounter">0 / 0</div></div>
+      </div>
+      <div class="field"><input type="text" id="fcQ" placeholder="السؤال..."></div>
+      <div class="field"><input type="text" id="fcA" placeholder="الجواب..."></div>
+      <button class="btn btn-primary btn-sm btn-full" onclick="addFlashcard()">➕ إضافة بطاقة</button>
+      <div id="fcDisplay"></div>
+      <div style="display:flex;gap:6px;margin-top:10px;">
+        <button class="btn btn-ghost btn-sm" style="flex:1;" onclick="prevFC()">◀</button>
+        <button class="btn btn-warning btn-sm" style="flex:1;" onclick="shuffleFC()">🔀</button>
+        <button class="btn btn-ghost btn-sm" style="flex:1;" onclick="nextFC()">▶</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-grades">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">🏆</div>
+        <div><div class="card-title">الدرجات</div><div class="card-sub">نظام 20</div></div>
+      </div>
+      <div class="field"><input type="text" id="gSubject" placeholder="المادة..."></div>
+      <div class="field"><input type="text" id="gName" placeholder="اسم التقييم..."></div>
+      <div class="field-row">
+        <div class="field" style="margin-bottom:8px;"><input type="number" id="gScore" placeholder="الدرجة" min="0" max="20" step="0.5"></div>
+        <div class="field" style="margin-bottom:8px;"><input type="number" id="gMax" placeholder="من" value="20" min="1"></div>
+      </div>
+      <button class="btn btn-primary btn-sm btn-full" onclick="addGrade()">➕ إضافة</button>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-ico green">📈</div><div class="stat-val" id="avgGrade">-</div><div class="stat-label">المعدل / 20</div></div>
+      <div class="stat-card"><div class="stat-ico orange">🎯</div><div class="stat-val" id="letterGrade">-</div><div class="stat-label">التقدير</div></div>
+    </div>
+    <div id="gradesList"></div>
+  </div>
+
+  <div class="page" id="page-exams">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">📝</div>
+        <div><div class="card-title">الامتحانات</div></div>
+      </div>
+      <div class="field"><input type="date" id="eDate"></div>
+      <div class="field"><input type="text" id="eSubject" placeholder="المادة..."></div>
+      <div class="field"><input type="text" id="eTopic" placeholder="الموضوع (اختياري)..."></div>
+      <button class="btn btn-primary btn-sm btn-full" onclick="addExam()">➕ إضافة</button>
+    </div>
+    <div id="examsList"></div>
+  </div>
+
+  <div class="page" id="page-notes">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">📓</div>
+        <div><div class="card-title">الملاحظات</div></div>
+      </div>
+      <div class="field"><input type="text" id="nTitle" placeholder="العنوان..."></div>
+      <div class="field"><textarea id="nContent" placeholder="اكتب ملاحظتك..." style="min-height:100px;"></textarea></div>
+      <button class="btn btn-primary btn-sm btn-full" onclick="addNote()">💾 حفظ</button>
+    </div>
+    <div id="notesList"></div>
+  </div>
+
+  <div class="page" id="page-goals">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">🎯</div>
+        <div><div class="card-title">الأهداف الذكية</div><div class="card-sub">SMART Goals</div></div>
+      </div>
+      <div class="field"><label>🎯 محدد</label><input type="text" id="goalTitle" placeholder="ما هو هدفك؟"></div>
+      <div class="field"><label>📏 قابل للقياس</label><input type="text" id="goalMeasure" placeholder="كيف ستقيس التقدم؟"></div>
+      <div class="field"><label>⏰ محدد بوقت</label><input type="date" id="goalDate"></div>
+      <button class="btn btn-primary btn-sm btn-full" onclick="addGoal()">➕ إضافة هدف</button>
+    </div>
+    <div id="goalsList"></div>
+  </div>
+
+  <div class="page" id="page-shopping">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">🛒</div>
+        <div><div class="card-title">قائمة التسوق</div><div class="card-sub">الإجمالي: <span id="shopTotal">0</span> دج</div></div>
+      </div>
+      <div class="field"><input type="text" id="shopItem" placeholder="اسم العنصر..."></div>
+      <div class="field"><input type="number" id="shopPrice" placeholder="السعر (دج)" min="0"></div>
+      <div class="field">
+        <select id="shopCat">
+          <option value="supplies">📚 مستلزمات مدرسية</option>
+          <option value="clothes">👕 ملابس</option>
+          <option value="books">📖 كتب</option>
+          <option value="stationery">✏️ أدوات مكتبية</option>
+          <option value="other">📌 أخرى</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-sm btn-full" onclick="addShopItem()">➕ إضافة للقائمة</button>
+    </div>
+    <div id="shopList"></div>
+  </div>
+
+  <div class="page" id="page-mood">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">😊</div>
+        <div><div class="card-title">متتبع المزاج</div><div class="card-sub">كيف تشعر اليوم؟</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+        <button class="btn btn-ghost" style="flex-direction:column;padding:12px 4px;" onclick="setMood('happy')"><span style="font-size:1.6rem;">😄</span><span style="font-size:0.65rem;margin-top:4px;">سعيد</span></button>
+        <button class="btn btn-ghost" style="flex-direction:column;padding:12px 4px;" onclick="setMood('neutral')"><span style="font-size:1.6rem;">😐</span><span style="font-size:0.65rem;margin-top:4px;">عادي</span></button>
+        <button class="btn btn-ghost" style="flex-direction:column;padding:12px 4px;" onclick="setMood('sad')"><span style="font-size:1.6rem;">😢</span><span style="font-size:0.65rem;margin-top:4px;">حزين</span></button>
+        <button class="btn btn-ghost" style="flex-direction:column;padding:12px 4px;" onclick="setMood('tired')"><span style="font-size:1.6rem;">😴</span><span style="font-size:0.65rem;margin-top:4px;">متعب</span></button>
+        <button class="btn btn-ghost" style="flex-direction:column;padding:12px 4px;" onclick="setMood('excited')"><span style="font-size:1.6rem;">🤩</span><span style="font-size:0.65rem;margin-top:4px;">متحمس</span></button>
+        <button class="btn btn-ghost" style="flex-direction:column;padding:12px 4px;" onclick="setMood('stressed')"><span style="font-size:1.6rem;">😰</span><span style="font-size:0.65rem;margin-top:4px;">متوتر</span></button>
+        <button class="btn btn-ghost" style="flex-direction:column;padding:12px 4px;" onclick="setMood('angry')"><span style="font-size:1.6rem;">😠</span><span style="font-size:0.65rem;margin-top:4px;">غاضب</span></button>
+        <button class="btn btn-ghost" style="flex-direction:column;padding:12px 4px;" onclick="setMood('calm')"><span style="font-size:1.6rem;">😌</span><span style="font-size:0.65rem;margin-top:4px;">هادئ</span></button>
+      </div>
+      <div style="margin-top:16px;" id="moodHistory"></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-achievements">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">🏅</div>
+        <div><div class="card-title">الإنجازات</div><div class="card-sub">إنجازاتك خلال الرحلة</div></div>
+      </div>
+      <div id="achievementsList"></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-books">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon">📚</div>
+        <div><div class="card-title">قائمة القراءة</div><div class="card-sub">تتبع الكتب التي تقرأها</div></div>
+      </div>
+      <div class="field"><input type="text" id="bookTitle" placeholder="عنوان الكتاب..."></div>
+      <div class="field"><input type="text" id="bookAuthor" placeholder="المؤلف..."></div>
+      <div class="field"><input type="number" id="bookPages" placeholder="عدد الصفحات"></div>
+      <button class="btn btn-primary btn-sm btn-full" onclick="addBook()">➕ إضافة كتاب</button>
+    </div>
+    <div id="booksList"></div>
+  </div>
+
+</div>
+
+<div class="sheet-overlay" id="sheetOverlay" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet">
+  <div class="sheet-handle"></div>
+  <h3>🎯 كل الميزات</h3>
+  <div class="sheet-grid">
+    <button class="sheet-item" onclick="goTo('schedule');closeSheet()"><span class="ico">📅</span><span>الجدول</span></button>
+    <button class="sheet-item" onclick="goTo('homework');closeSheet()"><span class="ico">📚</span><span>الواجبات</span></button>
+    <button class="sheet-item" onclick="goTo('gpa');closeSheet()"><span class="ico">🎯</span><span>المعدل</span></button>
+    <button class="sheet-item" onclick="goTo('attendance');closeSheet()"><span class="ico">📊</span><span>الحضور</span></button>
+    <button class="sheet-item" onclick="goTo('sounds');closeSheet()"><span class="ico">🎵</span><span>أصوات</span></button>
+    <button class="sheet-item" onclick="goTo('summary');closeSheet()"><span class="ico">📈</span><span>ملخص</span></button>
+    <button class="sheet-item" onclick="goTo('habits');closeSheet()"><span class="ico">📊</span><span>العادات</span></button>
+    <button class="sheet-item" onclick="goTo('water');closeSheet()"><span class="ico">💧</span><span>الماء</span></button>
+    <button class="sheet-item" onclick="goTo('flashcards');closeSheet()"><span class="ico">🃏</span><span>البطاقات</span></button>
+    <button class="sheet-item" onclick="goTo('grades');closeSheet()"><span class="ico">🏆</span><span>الدرجات</span></button>
+    <button class="sheet-item" onclick="goTo('exams');closeSheet()"><span class="ico">📝</span><span>الامتحانات</span></button>
+    <button class="sheet-item" onclick="goTo('notes');closeSheet()"><span class="ico">📓</span><span>الملاحظات</span></button>
+    <button class="sheet-item" onclick="goTo('goals');closeSheet()"><span class="ico">🎯</span><span>الأهداف</span></button>
+    <button class="sheet-item" onclick="goTo('shopping');closeSheet()"><span class="ico">🛒</span><span>التسوق</span></button>
+    <button class="sheet-item" onclick="goTo('mood');closeSheet()"><span class="ico">😊</span><span>المزاج</span></button>
+    <button class="sheet-item" onclick="goTo('books');closeSheet()"><span class="ico">📚</span><span>الكتب</span></button>
+    <button class="sheet-item" onclick="goTo('achievements');closeSheet()"><span class="ico">🏅</span><span>الإنجازات</span></button>
+    <button class="sheet-item" onclick="openModal('settingsModal');closeSheet()"><span class="ico">⚙️</span><span>الإعدادات</span></button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-overlay" id="settingsModal" onclick="if(event.target===this) closeModal('settingsModal')">
+  <div class="modal">
+    <div class="card-head">
+      <div class="card-icon">⚙️</div>
+      <div><div class="card-title">الإعدادات</div></div>
+    </div>
+    <h4 style="font-size:0.85rem;margin-bottom:10px;">🎨 الثيم</h4>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;">
+      <button class="btn btn-ghost btn-sm" onclick="setTheme('light')">☀️ فاتح</button>
+      <button class="btn btn-ghost btn-sm" onclick="setTheme('dark')">🌙 داكن</button>
+      <button class="btn btn-ghost btn-sm" onclick="setTheme('sunset')">🌅 غروب</button>
+      <button class="btn btn-ghost btn-sm" onclick="setTheme('ocean')">🌊 بحر</button>
+      <button class="btn btn-ghost btn-sm" onclick="setTheme('forest')">🌲 غابة</button>
+    </div>
+    <h4 style="font-size:0.85rem;margin-bottom:10px;">📤 البيانات</h4>
+    <button class="btn btn-primary btn-sm btn-full" onclick="exportData()" style="margin-bottom:8px;">⬇️ تصدير البيانات</button>
+    <button class="btn btn-warning btn-sm btn-full" onclick="document.getElementById('importFile').click()" style="margin-bottom:8px;">⬆️ استيراد</button>
+    <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(event)">
+    <button class="btn btn-danger btn-sm btn-full" onclick="clearAll()" style="margin-bottom:18px;">🗑️ حذف كل البيانات</button>
+    <p style="text-align:center;font-size:0.72rem;color:var(--text-muted);line-height:1.6;">
+      Back to School Planner PRO 5.0<br>
+      صُنع بإتقان 🇩🇿
+    </p>
+    <button class="btn btn-primary btn-full" onclick="closeModal('settingsModal')" style="margin-top:14px;">إغلاق</button>
+  </div>
+</div>
+
+<script>
+const DEFAULT_STATE = {
+  tasks: [], events: {}, habits: [], water: {},
+  flashcards: [], grades: [], exams: [], notes: [],
+  goals: [], shopping: [], sessions: [], books: [],
+  moods: {}, xp: 0, level: 1, streak: 0, lastVisit: null,
+  theme: 'light', achievements: [], schedule: {},
+  attendance: [], homework: []
+};
+let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+
+function todayKey(d) {
+  const date = d ? new Date(d) : new Date();
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+}
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('bsp_v5');
+    if (saved) state = { ...DEFAULT_STATE, ...JSON.parse(saved) };
+    const today = todayKey();
+    if (!state.water[today]) state.water[today] = [];
+  } catch (e) { console.error(e); }
+}
+
+function saveState() {
+  try { localStorage.setItem('bsp_v5', JSON.stringify(state)); } catch (e) {}
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timeout);
+  t._timeout = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = String(str || '');
+  return d.innerHTML;
+}
+
+function isWeekend(d) {
+  const day = (d || new Date()).getDay();
+  return day === 5 || day === 6;
+}
+
+function getWeekDays() {
+  const names = ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  const today = new Date();
+  const start = new Date(today);
+  start.setDate(today.getDate() - today.getDay());
+  return names.map((name, i) => {
+    const d = new Date(start);
+    d.setDate(start.getDate() + i);
+    return { name, date: d, isWeekend: i === 5 || i === 6, key: todayKey(d) };
+  });
+}
+
+function addXP(amount) {
+  state.xp += amount;
+  const newLevel = Math.floor(state.xp / 100) + 1;
+  if (newLevel > state.level) {
+    state.level = newLevel;
+    confetti();
+    toast(`🎉 وصلت للمستوى ${newLevel}!`);
+  }
+  saveState();
+  updateXPUI();
+}
+
+function updateXPUI() {
+  const inLevel = state.xp % 100;
+  document.getElementById('lvlNum').textContent = state.level;
+  document.getElementById('xpFill').style.width = inLevel + '%';
+  document.getElementById('xpText').textContent = `${inLevel}/100`;
+}
+
+function setTheme(t) {
+  if (t === 'light') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.setAttribute('data-theme', t);
+  state.theme = t;
+  saveState();
+  toast('🎨 تم تغيير الثيم');
+}
+
+function cycleTheme() {
+  const themes = ['light', 'dark', 'sunset', 'ocean', 'forest'];
+  const idx = themes.indexOf(state.theme || 'light');
+  setTheme(themes[(idx + 1) % themes.length]);
+}
+
+function goTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('page-' + page);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.side-item').forEach(b => {
+    b.classList.toggle('active', b.dataset.page === page);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (page === 'home') updateHome();
+  if (page === 'summary') renderSummary();
+  if (page === 'schedule') renderSchedule();
+  if (page === 'homework') renderHomework();
+  if (page === 'attendance') renderAttendance();
+  if (page === 'sounds') renderSounds();
+}
+
+function openSheet() {
+  document.getElementById('sheetOverlay').classList.add('active');
+  document.getElementById('sheet').classList.add('active');
+}
+function closeSheet() {
+  document.getElementById('sheetOverlay').classList.remove('active');
+  document.getElementById('sheet').classList.remove('active');
+}
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+function updateHome() {
+  const hour = new Date().getHours();
+  let greet = 'مرحبًا! 👋';
+  if (hour < 12) greet = '☀️ صباح الخير!';
+  else if (hour < 17) greet = '🌤️ مساء الخير!';
+  else greet = '🌙 مساء الخير!';
+  document.getElementById('heroGreeting').textContent = greet;
+
+  const days = ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  const months = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const now = new Date();
+  document.getElementById('heroDate').textContent = `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+  const total = state.tasks.length;
+  const done = state.tasks.filter(t => t.done).length;
+  document.getElementById('hsTasks').textContent = total;
+  document.getElementById('hsDone').textContent = done;
+  document.getElementById('hsStreak').textContent = state.streak || 0;
+
+  document.getElementById('sGoals').textContent = state.goals.length;
+  const todayWater = state.water[todayKey()] || [];
+  document.getElementById('sWater').textContent = `${todayWater.length}/8`;
+  document.getElementById('sPomo').textContent = state.sessions.length;
+
+  if (state.grades.length) {
+    const avg = state.grades.reduce((s, g) => s + (g.score / g.max) * 20, 0) / state.grades.length;
+    document.getElementById('sAvg').textContent = avg.toFixed(1);
+  } else {
+    document.getElementById('sAvg').textContent = '-';
+  }
+
+  renderWeekChart();
+}
+
+function renderWeekChart() {
+  const days = getWeekDays();
+  const chart = document.getElementById('weekChart');
+  if (!chart) return;
+  const counts = days.map(d => state.tasks.filter(t => t.done && t.date === d.key).length);
+  const max = Math.max(...counts, 1);
+  chart.innerHTML = days.map((d, i) => {
+    const h = Math.max((counts[i] / max) * 100, 4);
+    return `<div class="chart-bar"><div class="chart-val">${counts[i]}</div><div class="chart-fill ${d.isWeekend ? 'weekend' : ''}" style="height:${h}%"></div><div class="chart-label">${d.name.slice(0,3)}</div></div>`;
+  }).join('');
+}
+
+const TIPS = [
+  "ابدأ يومك بأصعب مهمة — ستشعر بالإنجاز طوال اليوم!",
+  "خصص 25 دقيقة للتركيز ثم 5 دقائق راحة (تقنية بومودورو).",
+  "راجع ملاحظاتك في نفس اليوم — ستتذكر 80% أكثر.",
+  "اشرب 8 أكواب ماء يوميًا لتركيز أفضل.",
+  "نظّم مكتبك قبل النوم — صباحك سيكون أسهل.",
+  "نم 7-9 ساعات — الذاكرة تُثبَّت أثناء النوم!",
+  "قسّم المهام الكبيرة إلى مهام صغيرة.",
+  "اشرح ما تعلمته لشخص آخر — أفضل طريقة للفهم.",
+  "ضع هاتفك بعيدًا أثناء الدراسة.",
+  "اكتب 3 أشياء ممتن لها كل يوم.",
+  "استخدم الجمعة والسبت للراحة الحقيقية.",
+  "راجع أهدافك كل صباح للحفاظ على التركيز.",
+  "المذاكرة الموزعة أفضل من المكثفة.",
+  "استخدم الخرائط الذهنية لربط المفاهيم.",
+  "الرياضة اليومية تحسن الذاكرة والتركيز."
+];
+
+function newTip() {
+  document.getElementById('dailyTip').textContent = TIPS[Math.floor(Math.random() * TIPS.length)];
+}
+
+let taskFilter = 'all';
+
+function addTask() {
+  const input = document.getElementById('taskInput');
+  const text = input.value.trim();
+  if (!text) return toast('⚠️ اكتب مهمة');
+  state.tasks.unshift({
+    id: Date.now(), text,
+    cat: document.getElementById('taskCat').value,
+    pri: document.getElementById('taskPri').value,
+    done: false, date: todayKey()
+  });
+  input.value = '';
+  saveState(); renderTasks(); updateHome();
+  addXP(5);
+  toast('✅ تمت الإضافة (+5 XP)');
+}
+
+function toggleTask(id) {
+  const t = state.tasks.find(x => x.id === id);
+  if (!t) return;
+  t.done = !t.done;
+  if (t.done) { addXP(10); confetti(); }
+  saveState(); renderTasks(); updateHome();
+}
+
+function deleteTask(id) {
+  state.tasks = state.tasks.filter(x => x.id !== id);
+  saveState(); renderTasks(); updateHome();
+}
+
+function toggleImportant(id) {
+  const t = state.tasks.find(x => x.id === id);
+  if (t) t.pri = t.pri === 'high' ? 'normal' : 'high';
+  saveState(); renderTasks();
+}
+
+function filterTasks(f) {
+  taskFilter = f;
+  ['fAll','fActive','fDone'].forEach(id => {
+    document.getElementById(id).classList.remove('btn-primary');
+    document.getElementById(id).classList.add('btn-ghost');
+  });
+  const map = { all: 'fAll', active: 'fActive', done: 'fDone' };
+  document.getElementById(map[f]).classList.add('btn-primary');
+  document.getElementById(map[f]).classList.remove('btn-ghost');
+  renderTasks();
+}
+
+function renderTasks() {
+  const list = document.getElementById('tasksList');
+  if (!list) return;
+  let tasks = [...state.tasks];
+  if (taskFilter === 'active') tasks = tasks.filter(t => !t.done);
+  if (taskFilter === 'done') tasks = tasks.filter(t => t.done);
+
+  document.getElementById('tasksCount').textContent = `${state.tasks.length} مهمة`;
+
+  if (!tasks.length) {
+    list.innerHTML = `<div class="empty"><div class="empty-emoji">📭</div><p class="empty-text">لا توجد مهام</p></div>`;
+  } else {
+    const icons = { study:'📚', homework:'📝', reading:'📖', exercise:'✏️', other:'📌' };
+    list.innerHTML = tasks.map(t => `
+      <div class="task ${t.done?'done':''} ${t.pri==='high'?'important':''}">
+        <div class="task-check ${t.done?'checked':''}" onclick="toggleTask(${t.id})">${t.done?'✓':''}</div>
+        <div class="task-body">
+          <div class="task-text">${icons[t.cat]||'📌'} ${escapeHtml(t.text)}</div>
+          <div class="task-meta">
+            ${t.pri==='high' ? '<span class="chip chip-danger">🔴 عالية</span>' : ''}
+            ${t.pri==='low' ? '<span class="chip chip-success">🟢 منخفضة</span>' : ''}
+          </div>
+        </div>
+        <div class="task-actions">
+          <button class="task-btn" onclick="toggleImportant(${t.id})">⭐</button>
+          <button class="task-btn" onclick="deleteTask(${t.id})">🗑️</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  const total = state.tasks.length;
+  const done = state.tasks.filter(t => t.done).length;
+  const p = total ? Math.round((done / total) * 100) : 0;
+  document.getElementById('taskProgress').style.width = p + '%';
+}
+
+let calDate = new Date();
+let selectedDate = new Date();
+
+function changeMonth(d) {
+  calDate.setMonth(calDate.getMonth() + d);
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const months = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  document.getElementById('calTitle').textContent = `${months[calDate.getMonth()]} ${calDate.getFullYear()}`;
+  document.getElementById('calSelDate').textContent = selectedDate.toLocaleDateString('ar-DZ');
+
+  const y = calDate.getFullYear();
+  const m = calDate.getMonth();
+  const firstDay = new Date(y, m, 1).getDay();
+  const daysInMonth = new Date(y, m + 1, 0).getDate();
+  const dayLabels = ['أحد','إثن','ثلا','أرب','خمي','جمع','سبت'];
+  const today = new Date();
+
+  let html = dayLabels.map((d, i) => `<div class="cal-head ${i===5||i===6?'weekend':''}">${d}</div>`).join('');
+  for (let i = 0; i < firstDay; i++) html += '<div class="cal-cell empty"></div>';
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dt = new Date(y, m, d);
+    const isToday = d === today.getDate() && m === today.getMonth() && y === today.getFullYear();
+    const isSel = d === selectedDate.getDate() && m === selectedDate.getMonth() && y === selectedDate.getFullYear();
+    const wk = isWeekend(dt);
+    const hasEvents = (state.events[todayKey(dt)] || []).length > 0;
+    html += `<div class="cal-cell ${wk?'weekend':''} ${isToday?'today':''} ${isSel?'selected':''}" onclick="selectDay(${d})">${d}${hasEvents?'<div class="dot"></div>':''}</div>`;
+  }
+
+  document.getElementById('calGrid').innerHTML = html;
+  renderEvents();
+}
+
+function selectDay(d) {
+  selectedDate = new Date(calDate.getFullYear(), calDate.getMonth(), d);
+  renderCalendar();
+}
+
+function addEvent() {
+  const title = document.getElementById('eventTitle').value.trim();
+  if (!title) return toast('⚠️ اكتب العنوان');
+  const key = todayKey(selectedDate);
+  if (!state.events[key]) state.events[key] = [];
+  state.events[key].push({ id: Date.now(), title });
+  document.getElementById('eventTitle').value = '';
+  saveState(); renderEvents(); renderCalendar();
+  addXP(3);
+  toast('✅ تمت الإضافة');
+}
+
+function deleteEvent(id) {
+  const key = todayKey(selectedDate);
+  state.events[key] = (state.events[key] || []).filter(e => e.id !== id);
+  saveState(); renderEvents(); renderCalendar();
+}
+
+function renderEvents() {
+  const key = todayKey(selectedDate);
+  const events = state.events[key] || [];
+  const list = document.getElementById('eventsList');
+  if (!events.length) {
+    list.innerHTML = `<div class="empty" style="padding:15px;"><p class="empty-text">لا توجد أحداث</p></div>`;
+  } else {
+    list.innerHTML = events.map(e => `
+      <div class="task" style="padding:10px;">
+        <div class="task-body"><div class="task-text">📅 ${escapeHtml(e.title)}</div></div>
+        <button class="task-btn" onclick="deleteEvent(${e.id})">🗑️</button>
+      </div>
+    `).join('');
+  }
+}
+
+let timerInterval = null;
+let timerSeconds = 25 * 60;
+let timerRunning = false;
+
+function setTimerPreset(btn, min) {
+  if (timerRunning) return toast('⚠️ أوقف المؤقت أولاً');
+  timerSeconds = min * 60;
+  updateTimerDisplay();
+  document.querySelectorAll('.timer-preset').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(timerSeconds / 60);
+  const s = timerSeconds % 60;
+  const disp = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  const el = document.getElementById('timerDisplay');
+  if (el) el.textContent = disp;
+  const focusEl = document.getElementById('focusTimer');
+  if (focusEl) focusEl.textContent = disp;
+}
+
+function startTimer() {
+  if (timerRunning) return;
+  timerRunning = true;
+  document.getElementById('timerStatus').textContent = '🔥 جاري التركيز...';
+  document.getElementById('startBtn').disabled = true;
+  if (navigator.wakeLock) navigator.wakeLock.request('screen').catch(()=>{});
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+    updateTimerDisplay();
+    if (timerSeconds <= 0) {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      document.getElementById('startBtn').disabled = false;
+      document.getElementById('timerStatus').textContent = '🎉 انتهت الجلسة!';
+      state.sessions.push({ id: Date.now(), date: todayKey(), duration: 25 });
+      saveState(); renderSessions();
+      confetti(); addXP(20);
+      if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('🍅 انتهت الجلسة!', { body: 'أحسنت! خذ راحة' });
+      }
+    }
+  }, 1000);
+}
+
+function pauseTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  document.getElementById('startBtn').disabled = false;
+  document.getElementById('timerStatus').textContent = '⏸️ متوقف';
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerSeconds = 25 * 60;
+  updateTimerDisplay();
+  document.getElementById('startBtn').disabled = false;
+  document.getElementById('timerStatus').textContent = 'جاهز للتركيز';
+}
+
+function renderSessions() {
+  const today = state.sessions.filter(s => s.date === todayKey());
+  const el = document.getElementById('todaySessions');
+  if (el) el.textContent = today.length;
+  const list = document.getElementById('sessionsList');
+  if (!list) return;
+  if (!today.length) {
+    list.innerHTML = `<div class="empty" style="padding:15px;"><p class="empty-text">لا توجد جلسات اليوم</p></div>`;
+  } else {
+    list.innerHTML = today.map((s, i) => `<div class="task" style="padding:10px;"><div class="task-body"><div class="task-text">🍅 جلسة ${i+1} — مكتملة</div></div><span class="chip chip-success">✓</span></div>`).join('');
+  }
+}
+
+const SCHEDULE_TIMES = ['8:00','9:00','10:00','11:00','12:00','13:00','14:00','15:00'];
+const SCHEDULE_DAYS = [
+  { key: 'sun', name: 'الأحد' }, { key: 'mon', name: 'الإثنين' },
+  { key: 'tue', name: 'الثلاثاء' }, { key: 'wed', name: 'الأربعاء' },
+  { key: 'thu', name: 'الخميس' }, { key: 'fri', name: 'الجمعة', weekend: true },
+  { key: 'sat', name: 'السبت', weekend: true }
+];
+
+function renderSchedule() {
+  const grid = document.getElementById('scheduleGrid');
+  if (!grid) return;
+  let html = '<div class="sch-cell head"></div>';
+  SCHEDULE_DAYS.forEach(d => {
+    html += `<div class="sch-cell head ${d.weekend ? 'weekend' : ''}">${d.name.slice(0,3)}</div>`;
+  });
+  SCHEDULE_TIMES.forEach(time => {
+    html += `<div class="sch-cell time">${time}</div>`;
+    SCHEDULE_DAYS.forEach(day => {
+      const key = `sch_${day.key}_${time}`;
+      const val = state.schedule?.[key] || '';
+      html += `<div class="sch-cell ${val ? 'filled' : ''}" onclick="editScheduleCell('${key}')">${escapeHtml(val) || '➕'}</div>`;
+    });
+  });
+  grid.innerHTML = html;
+}
+
+function editScheduleCell(key) {
+  const current = state.schedule?.[key] || '';
+  const val = prompt('اسم المادة (اتركه فارغًا للحذف):', current);
+  if (val === null) return;
+  if (!state.schedule) state.schedule = {};
+  if (val.trim()) state.schedule[key] = val.trim();
+  else delete state.schedule[key];
+  saveState(); renderSchedule();
+  toast('✅ تم التحديث');
+}
+
+function addHomework() {
+  const subject = document.getElementById('hwSubject').value.trim();
+  const desc = document.getElementById('hwDesc').value.trim();
+  const due = document.getElementById('hwDue').value;
+  if (!subject || !desc) return toast('⚠️ اكمل البيانات');
+  if (!state.homework) state.homework = [];
+  state.homework.push({ id: Date.now(), subject, desc, due: due || '', done: false, created: todayKey() });
+  ['hwSubject','hwDesc','hwDue'].forEach(id => document.getElementById(id).value = '');
+  saveState(); renderHomework();
+  addXP(5);
+  toast('✅ تمت الإضافة');
+}
+
+function toggleHomework(id) {
+  const h = state.homework.find(x => x.id === id);
+  if (!h) return;
+  h.done = !h.done;
+  if (h.done) { addXP(10); confetti(); }
+  saveState(); renderHomework();
+}
+
+function deleteHomework(id) {
+  state.homework = state.homework.filter(h => h.id !== id);
+  saveState(); renderHomework();
+}
+
+function renderHomework() {
+  const list = document.getElementById('homeworkList');
+  if (!list) return;
+  if (!state.homework) state.homework = [];
+  const countEl = document.getElementById('hwCount');
+  if (countEl) countEl.textContent = `${state.homework.filter(h => !h.done).length} واجب معلق`;
+
+  if (!state.homework.length) {
+    list.innerHTML = `<div class="empty"><div class="empty-emoji">📚</div><p class="empty-text">لا توجد واجبات</p></div>`;
+    return;
+  }
+
+  const sorted = [...state.homework].sort((a, b) => {
+    if (a.done !== b.done) return a.done ? 1 : -1;
+    return (a.due || '9999').localeCompare(b.due || '9999');
+  });
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  list.innerHTML = sorted.map(h => {
+    let badge = '';
+    if (h.due && !h.done) {
+      const days = Math.ceil((new Date(h.due) - today) / 86400000);
+      const color = days < 0 ? 'danger' : days <= 2 ? 'warning' : 'success';
+      const text = days < 0 ? 'متأخر!' : days === 0 ? 'اليوم!' : days === 1 ? 'غدًا' : `${days} أيام`;
+      badge = `<span class="chip chip-${color}">⏰ ${text}</span>`;
+    }
+    return `
+      <div class="task ${h.done ? 'done' : ''}">
+        <div class="task-check ${h.done ? 'checked' : ''}" onclick="toggleHomework(${h.id})">${h.done ? '✓' : ''}</div>
+        <div class="task-body">
+          <div class="task-text">📚 ${escapeHtml(h.subject)}</div>
+          <div class="task-meta"><span>${escapeHtml(h.desc)}</span>${badge}</div>
+        </div>
+        <button class="task-btn" onclick="deleteHomework(${h.id})">🗑️</button>
+      </div>
+    `;
+  }).join('');
+}
+
+function calculateGPA() {
+  const target = parseFloat(document.getElementById('gpaTarget').value);
+  const current = parseFloat(document.getElementById('gpaCurrent').value);
+  const remaining = parseInt(document.getElementById('gpaRemaining').value);
+  const result = document.getElementById('gpaResult');
+
+  if (isNaN(target) || isNaN(current) || isNaN(remaining)) {
+    result.innerHTML = '<div class="card" style="background:var(--surface-2);padding:14px;text-align:center;color:var(--danger);">⚠️ املأ كل الحقول</div>';
+    return;
+  }
+
+  const needed = ((target * (remaining + 1)) - current) / remaining;
+
+  let html = '';
+  if (needed > 20) {
+    html = `<div class="card" style="background:linear-gradient(135deg,#FF4757,#C92A2A);color:white;padding:18px;text-align:center;"><div style="font-size:2rem;margin-bottom:8px;">😰</div><div style="font-weight:700;margin-bottom:6px;">صعب جدًا!</div><div style="font-size:0.85rem;">تحتاج معدل ${needed.toFixed(2)} — غير ممكن</div></div>`;
+  } else if (needed >= 15) {
+    html = `<div class="card" style="background:linear-gradient(135deg,#FFB020,#FF8A00);color:white;padding:18px;text-align:center;"><div style="font-size:2rem;margin-bottom:8px;">💪</div><div style="font-weight:700;margin-bottom:6px;">يحتاج جهدًا كبيرًا</div><div style="font-size:0.85rem;">تحتاج معدل <b>${needed.toFixed(2)}</b></div></div>`;
+  } else if (needed >= 10) {
+    html = `<div class="card" style="background:linear-gradient(135deg,#00B8D9,#0077B6);color:white;padding:18px;text-align:center;"><div style="font-size:2rem;margin-bottom:8px;">📚</div><div style="font-weight:700;margin-bottom:6px;">ممكن!</div><div style="font-size:0.85rem;">تحتاج معدل <b>${needed.toFixed(2)}</b> فقط</div></div>`;
+  } else {
+    html = `<div class="card" style="background:linear-gradient(135deg,#00C9A7,#00897B);color:white;padding:18px;text-align:center;"><div style="font-size:2rem;margin-bottom:8px;">🎉</div><div style="font-weight:700;margin-bottom:6px;">ممتاز!</div><div style="font-size:0.85rem;">تحتاج فقط <b>${needed.toFixed(2)}</b></div></div>`;
+  }
+  result.innerHTML = html;
+}
+
+function addAttendance(type) {
+  const subject = document.getElementById('attSubject').value.trim();
+  if (!subject) return toast('⚠️ اكتب اسم المادة');
+  if (!state.attendance) state.attendance = [];
+  state.attendance.push({ id: Date.now(), subject, type, date: todayKey() });
+  saveState(); renderAttendance();
+  toast(type === 'present' ? '✅ حاضر' : '❌ غائب');
+}
+
+function renderAttendance() {
+  const list = document.getElementById('attendanceList');
+  const sum = document.getElementById('attendanceSummary');
+  if (!list || !sum) return;
+  if (!state.attendance) state.attendance = [];
+
+  if (!state.attendance.length) {
+    sum.innerHTML = '';
+    list.innerHTML = `<div class="empty"><div class="empty-emoji">📊</div><p class="empty-text">لا توجد سجلات</p></div>`;
+    return;
+  }
+
+  const bySubject = {};
+  state.attendance.forEach(a => {
+    if (!bySubject[a.subject]) bySubject[a.subject] = { present: 0, absent: 0 };
+    bySubject[a.subject][a.type === 'present' ? 'present' : 'absent']++;
+  });
+
+  const totalPresent = state.attendance.filter(a => a.type === 'present').length;
+  const totalAbsent = state.attendance.filter(a => a.type === 'absent').length;
+  const totalDays = totalPresent + totalAbsent;
+  const pct = totalDays ? Math.round((totalPresent / totalDays) * 100) : 0;
+
+  sum.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+      <div class="stat-card" style="text-align:center;padding:10px;"><div class="stat-val" style="color:var(--success);">${totalPresent}</div><div class="stat-label">حاضر</div></div>
+      <div class="stat-card" style="text-align:center;padding:10px;"><div class="stat-val" style="color:var(--danger);">${totalAbsent}</div><div class="stat-label">غائب</div></div>
+      <div class="stat-card" style="text-align:center;padding:10px;"><div class="stat-val" style="color:var(--primary);">${pct}%</div><div class="stat-label">النسبة</div></div>
+    </div>`;
+
+  list.innerHTML = Object.entries(bySubject).map(([subject, data]) => {
+    const subTotal = data.present + data.absent;
+    const subPct = subTotal ? Math.round((data.present / subTotal) * 100) : 0;
+    const color = subPct >= 80 ? 'success' : subPct >= 60 ? 'warning' : 'danger';
+    return `<div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <div style="font-weight:700;">📚 ${escapeHtml(subject)}</div>
+        <span class="chip chip-${color}">${subPct}%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${subPct}%"></div></div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:6px;">✅ ${data.present} حاضر — ❌ ${data.absent} غائب</div>
+    </div>`;
+  }).join('');
+}
+
+let audioCtx = null;
+let currentSound = null;
+let soundVolume = 0.3;
+
+const SOUNDS = [
+  { id: 'white', name: 'ضوضاء بيضاء', icon: '🎵', type: 'noise' },
+  { id: 'brown', name: 'ضوضاء بنية', icon: '🌊', type: 'brown' },
+  { id: 'rain', name: 'مطر', icon: '🌧️', type: 'noise_filter' },
+  { id: 'forest', name: 'غابة', icon: '🌲', type: 'brown_filter' },
+  { id: 'cafe', name: 'مقهى', icon: '☕', type: 'noise_low' },
+  { id: 'waves', name: 'أمواج', icon: '🌊', type: 'waves' }
+];
+
+function renderSounds() {
+  const grid = document.getElementById('soundsGrid');
+  if (!grid) return;
+  grid.innerHTML = SOUNDS.map(s => `<button class="sound-btn" id="sound_${s.id}" onclick="playSound('${s.id}')"><span class="ico">${s.icon}</span><span>${s.name}</span></button>`).join('');
+}
+
+function initAudio() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return null; }
+  }
+  return audioCtx;
+}
+
+function playSound(id) {
+  const ctx = initAudio();
+  if (!ctx) return toast('❌ المتصفح لا يدعم الصوت');
+  if (ctx.state === 'suspended') ctx.resume();
+
+  if (currentSound === id) { stopAllSounds(); return; }
+  stopAllSounds();
+
+  const config = SOUNDS.find(s => s.id === id);
+  if (!config) return;
+
+  const bufferSize = 2 * ctx.sampleRate;
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const output = buffer.getChannelData(0);
+
+  if (config.type.startsWith('brown')) {
+    let lastOut = 0;
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1;
+      output[i] = (lastOut + 0.02 * white) / 1.02;
+      lastOut = output[i];
+      output[i] *= 3.5;
+    }
+  } else {
+    for (let i = 0; i < bufferSize; i++) output[i] = Math.random() * 2 - 1;
+  }
+
+  const node = ctx.createBufferSource();
+  node.buffer = buffer; node.loop = true;
+
+  const gainNode = ctx.createGain();
+  gainNode.gain.value = soundVolume;
+
+  let lastNode = node;
+  if (config.type.includes('filter') || config.type.includes('low')) {
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = config.id === 'rain' ? 4000 : 800;
+    node.connect(filter);
+    lastNode = filter;
+  }
+  lastNode.connect(gainNode);
+  gainNode.connect(ctx.destination);
+
+  node.start();
+  currentSound = id;
+  document.querySelectorAll('.sound-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('sound_' + id);
+  if (btn) btn.classList.add('active');
+  toast('🎵 ' + config.name);
+}
+
+function setVolume(v) {
+  soundVolume = parseInt(v) / 100;
+}
+
+function stopAllSounds() {
+  try { if (audioCtx) { audioCtx.close(); audioCtx = null; } } catch (e) {}
+  currentSound = null;
+  document.querySelectorAll('.sound-btn').forEach(b => b.classList.remove('active'));
+}
+
+function enterFocusMode() {
+  const overlay = document.createElement('div');
+  overlay.className = 'focus-overlay active';
+  overlay.id = 'focusOverlay';
+  overlay.innerHTML = `<div style="font-size:3rem;margin-bottom:20px;">🎯</div><div class="focus-timer" id="focusTimer">25:00</div><div class="focus-label">وضع التركيز العميق نشط</div><button class="focus-exit" onclick="exitFocusMode()">⏹️ إيقاف التركيز</button>`;
+  document.body.appendChild(overlay);
+  document.body.classList.add('focus-mode');
+  const focusEl = document.getElementById('focusTimer');
+  const timerEl = document.getElementById('timerDisplay');
+  if (focusEl && timerEl) focusEl.textContent = timerEl.textContent;
+  if (!timerRunning) startTimer();
+}
+
+function exitFocusMode() {
+  const overlay = document.getElementById('focusOverlay');
+  if (overlay) overlay.remove();
+  document.body.classList.remove('focus-mode');
+}
+
+function renderSummary() {
+  const today = todayKey();
+  const el = document.getElementById('summaryContent');
+  const dateEl = document.getElementById('summaryDate');
+  if (!el) return;
+
+  const now = new Date();
+  dateEl.textContent = now.toLocaleDateString('ar-DZ', { weekday: 'long', day: 'numeric', month: 'long' });
+
+  const todayTasks = state.tasks.filter(t => t.date === today);
+  const doneToday = todayTasks.filter(t => t.done).length;
+  const pending = state.tasks.filter(t => !t.done).length;
+  const water = (state.water[today] || []).length;
+  const sessions = state.sessions.filter(s => s.date === today).length;
+  const upcomingExams = state.exams.filter(e => new Date(e.date) >= now).length;
+  const pendingHW = (state.homework || []).filter(h => !h.done).length;
+  const mood = state.moods[today];
+
+  const items = [
+    { ico: '✅', val: `${doneToday}/${todayTasks.length}`, lbl: 'مهام اليوم', color: 'success' },
+    { ico: '⏳', val: pending, lbl: 'مهام معلقة', color: 'warning' },
+    { ico: '💧', val: `${water}/8`, lbl: 'أكواب الماء', color: 'info' },
+    { ico: '🍅', val: sessions, lbl: 'جلسات تركيز', color: 'danger' },
+    { ico: '📝', val: pendingHW, lbl: 'واجبات معلقة', color: 'primary' },
+    { ico: '📋', val: upcomingExams, lbl: 'امتحانات قادمة', color: 'warning' }
+  ];
+
+  if (mood && MOODS[mood]) {
+    items.push({ ico: MOODS[mood].emoji, val: MOODS[mood].label, lbl: 'مزاجك', color: 'success' });
+  }
+
+  let msg = '🌟 ابدأ يومك بمهمة صغيرة!';
+  if (doneToday === 0 && todayTasks.length > 0) msg = '🚀 ابدأ الآن — أول مهمة ستفتح الطريق!';
+  else if (doneToday === todayTasks.length && todayTasks.length > 0) msg = '🎉 أكملت كل المهام!';
+  else if (doneToday > 0) msg = '💪 أنت في الطريق الصحيح!';
+
+  el.innerHTML = items.map(i => `<div class="summary-item"><span class="ico">${i.ico}</span><div class="body"><div class="val" style="color:var(--${i.color})">${i.val}</div><div class="lbl">${i.lbl}</div></div></div>`).join('') +
+    `<div class="card" style="background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;padding:16px;text-align:center;margin-top:12px;"><p style="font-size:0.85rem;font-weight:600;line-height:1.6;">${msg}</p></div>`;
+}
+
+function addHabit() {
+  const name = document.getElementById('habitInput').value.trim();
+  if (!name) return toast('⚠️ اكتب اسم العادة');
+  state.habits.push({ id: Date.now(), name, days: {} });
+  document.getElementById('habitInput').value = '';
+  saveState(); renderHabits();
+  toast('✅ تمت الإضافة');
+}
+
+function renderHabits() {
+  const wrap = document.getElementById('habitsWrap');
+  const days = getWeekDays();
+  if (!state.habits.length) {
+    wrap.innerHTML = `<div class="empty"><div class="empty-emoji">📊</div><p class="empty-text">أضف عادة</p></div>`;
+    return;
+  }
+  let html = '<div class="habit-row"><div class="habit-label"></div>';
+  days.forEach(d => { html += `<div class="habit-head ${d.isWeekend?'weekend':''}">${d.name.slice(0,3)}</div>`; });
+  html += '</div>';
+  state.habits.forEach(h => {
+    html += `<div class="habit-row"><div class="habit-label">${escapeHtml(h.name)}</div>`;
+    days.forEach(d => {
+      const done = h.days[d.key];
+      const isToday = d.key === todayKey();
+      html += `<div class="habit-cell ${done?'done':''} ${isToday?'today':''}" onclick="toggleHabit(${h.id}, '${d.key}')">${done?'✓':''}</div>`;
+    });
+    html += '</div>';
+  });
+  wrap.innerHTML = html;
+}
+
+function toggleHabit(id, key) {
+  const h = state.habits.find(x => x.id === id);
+  if (!h) return;
+  h.days[key] = !h.days[key];
+  saveState(); renderHabits();
+  if (h.days[key]) addXP(3);
+}
+
+function renderWater() {
+  const key = todayKey();
+  const water = state.water[key] || [];
+  const grid = document.getElementById('waterGrid');
+  let html = '';
+  for (let i = 0; i < 8; i++) {
+    html += `<div class="water-cup ${water.includes(i)?'filled':''}" onclick="toggleWater(${i})">💧</div>`;
+  }
+  grid.innerHTML = html;
+  document.getElementById('waterText').textContent = `${water.length} / 8 أكواب`;
+  renderWaterChart();
+}
+
+function toggleWater(i) {
+  const key = todayKey();
+  if (!state.water[key]) state.water[key] = [];
+  const idx = state.water[key].indexOf(i);
+  if (idx >= 0) state.water[key].splice(idx, 1);
+  else {
+    state.water[key].push(i);
+    if (state.water[key].length === 8) { confetti(); toast('🎉 أكملت 8 أكواب!'); addXP(15); }
+  }
+  saveState(); renderWater(); updateHome();
+}
+
+function renderWaterChart() {
+  const days = getWeekDays();
+  const chart = document.getElementById('waterChart');
+  if (!chart) return;
+  const counts = days.map(d => (state.water[d.key] || []).length);
+  chart.innerHTML = days.map((d, i) => {
+    const h = Math.max((counts[i] / 8) * 100, 4);
+    return `<div class="chart-bar"><div class="chart-val">${counts[i]}</div><div class="chart-fill ${d.isWeekend?'weekend':''}" style="height:${h}%"></div><div class="chart-label">${d.name.slice(0,3)}</div></div>`;
+  }).join('');
+}
+
+let fcIdx = 0, fcFlipped = false;
+
+function addFlashcard() {
+  const q = document.getElementById('fcQ').value.trim();
+  const a = document.getElementById('fcA').value.trim();
+  if (!q || !a) return toast('⚠️ اكمل البيانات');
+  state.flashcards.push({ id: Date.now(), q, a });
+  document.getElementById('fcQ').value = '';
+  document.getElementById('fcA').value = '';
+  saveState(); renderFC();
+  addXP(5);
+  toast('✅ تمت الإضافة');
+}
+
+function renderFC() {
+  const d = document.getElementById('fcDisplay');
+  const c = document.getElementById('fcCounter');
+  if (!d) return;
+  if (!state.flashcards.length) {
+    d.innerHTML = `<div class="empty"><div class="empty-emoji">🃏</div><p class="empty-text">لا توجد بطاقات</p></div>`;
+    c.textContent = '0 / 0';
+    return;
+  }
+  if (fcIdx >= state.flashcards.length) fcIdx = 0;
+  const card = state.flashcards[fcIdx];
+  d.innerHTML = `<div class="flashcard ${fcFlipped?'flipped':''}" onclick="flipFC()">${fcFlipped ? '💡 ' + escapeHtml(card.a) : '❓ ' + escapeHtml(card.q)}</div>`;
+  c.textContent = `${fcIdx + 1} / ${state.flashcards.length}`;
+}
+
+function flipFC() { fcFlipped = !fcFlipped; renderFC(); }
+function nextFC() { if (!state.flashcards.length) return; fcIdx = (fcIdx + 1) % state.flashcards.length; fcFlipped = false; renderFC(); }
+function prevFC() { if (!state.flashcards.length) return; fcIdx = (fcIdx - 1 + state.flashcards.length) % state.flashcards.length; fcFlipped = false; renderFC(); }
+function shuffleFC() { state.flashcards.sort(() => Math.random() - 0.5); fcIdx = 0; fcFlipped = false; saveState(); renderFC(); toast('🔀 تم الخلط'); }
+
+function addGrade() {
+  const subject = document.getElementById('gSubject').value.trim();
+  const name = document.getElementById('gName').value.trim();
+  const score = parseFloat(document.getElementById('gScore').value);
+  const max = parseFloat(document.getElementById('gMax').value) || 20;
+  if (!subject || isNaN(score)) return toast('⚠️ اكمل البيانات');
+  state.grades.push({ id: Date.now(), subject, name, score, max });
+  ['gSubject','gName','gScore'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('gMax').value = '20';
+  saveState(); renderGrades(); updateHome();
+  addXP(5);
+  toast('✅ تمت الإضافة');
+}
+
+function deleteGrade(id) {
+  state.grades = state.grades.filter(g => g.id !== id);
+  saveState(); renderGrades(); updateHome();
+}
+
+function renderGrades() {
+  const list = document.getElementById('gradesList');
+  if (!list) return;
+  if (!state.grades.length) {
+    list.innerHTML = `<div class="empty"><div class="empty-emoji">🏆</div><p class="empty-text">لا توجد درجات</p></div>`;
+  } else {
+    list.innerHTML = state.grades.map(g => {
+      const pct = (g.score / g.max) * 100;
+      const color = pct >= 90 ? 'success' : pct >= 70 ? 'info' : pct >= 50 ? 'warning' : 'danger';
+      return `<div class="task"><div class="task-body"><div class="task-text">${escapeHtml(g.subject)}</div><div class="task-meta"><span class="chip chip-${color}">${g.score} / ${g.max}</span>${g.name ? `<span>${escapeHtml(g.name)}</span>` : ''}</div></div><button class="task-btn" onclick="deleteGrade(${g.id})">🗑️</button></div>`;
+    }).join('');
+  }
+
+  if (state.grades.length) {
+    const avg = state.grades.reduce((s, g) => s + (g.score / g.max) * 20, 0) / state.grades.length;
+    document.getElementById('avgGrade').textContent = avg.toFixed(2);
+    let letter = 'F';
+    if (avg >= 16) letter = 'A';
+    else if (avg >= 14) letter = 'B';
+    else if (avg >= 12) letter = 'C';
+    else if (avg >= 10) letter = 'D';
+    document.getElementById('letterGrade').textContent = letter;
+  } else {
+    document.getElementById('avgGrade').textContent = '-';
+    document.getElementById('letterGrade').textContent = '-';
+  }
+}
+
+function addExam() {
+  const date = document.getElementById('eDate').value;
+  const subject = document.getElementById('eSubject').value.trim();
+  const topic = document.getElementById('eTopic').value.trim();
+  if (!date || !subject) return toast('⚠️ اكمل البيانات');
+  state.exams.push({ id: Date.now(), date, subject, topic });
+  ['eDate','eSubject','eTopic'].forEach(id => document.getElementById(id).value = '');
+  saveState(); renderExams();
+  toast('✅ تمت الإضافة');
+}
+
+function deleteExam(id) {
+  state.exams = state.exams.filter(e => e.id !== id);
+  saveState(); renderExams();
+}
+
+function renderExams() {
+  const list = document.getElementById('examsList');
+  if (!list) return;
+  if (!state.exams.length) {
+    list.innerHTML = `<div class="empty"><div class="empty-emoji">📝</div><p class="empty-text">لا توجد امتحانات</p></div>`;
+    return;
+  }
+  const sorted = [...state.exams].sort((a, b) => a.date.localeCompare(b.date));
+  const today = new Date(); today.setHours(0,0,0,0);
+  list.innerHTML = sorted.map(e => {
+    const days = Math.ceil((new Date(e.date) - today) / 86400000);
+    const badge = days < 0 ? 'انتهى' : days === 0 ? 'اليوم!' : days === 1 ? 'غدًا' : `باقي ${days} يوم`;
+    const color = days < 0 ? 'info' : days <= 3 ? 'danger' : days <= 7 ? 'warning' : 'success';
+    return `<div class="card"><div style="display:flex;justify-content:space-between;align-items:start;gap:8px;"><div style="flex:1;"><div style="font-weight:700;margin-bottom:4px;">📚 ${escapeHtml(e.subject)}</div>${e.topic ? `<div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;">📖 ${escapeHtml(e.topic)}</div>` : ''}<div style="font-size:0.75rem;color:var(--text-muted);">📅 ${e.date}</div></div><div style="display:flex;flex-direction:column;gap:6px;align-items:end;"><span class="chip chip-${color}">${badge}</span><button class="task-btn" onclick="deleteExam(${e.id})">🗑️</button></div></div></div>`;
+  }).join('');
+}
+
+function addNote() {
+  const title = document.getElementById('nTitle').value.trim();
+  const content = document.getElementById('nContent').value.trim();
+  if (!title && !content) return toast('⚠️ اكتب ملاحظة');
+  state.notes.unshift({ id: Date.now(), title: title || 'بدون عنوان', content, date: new Date().toLocaleDateString('ar-DZ') });
+  document.getElementById('nTitle').value = '';
+  document.getElementById('nContent').value = '';
+  saveState(); renderNotes();
+  addXP(3);
+  toast('✅ تم الحفظ');
+}
+
+function deleteNote(id) {
+  state.notes = state.notes.filter(n => n.id !== id);
+  saveState(); renderNotes();
+}
+
+function renderNotes() {
+  const list = document.getElementById('notesList');
+  if (!list) return;
+  if (!state.notes.length) {
+    list.innerHTML = `<div class="empty"><div class="empty-emoji">📓</div><p class="empty-text">لا توجد ملاحظات</p></div>`;
+    return;
+  }
+  list.innerHTML = state.notes.map(n => `<div class="card"><div style="display:flex;justify-content:space-between;align-items:start;gap:8px;"><div style="flex:1;"><div style="font-weight:700;margin-bottom:6px;">${escapeHtml(n.title)}</div><div style="font-size:0.68rem;color:var(--text-muted);margin-bottom:6px;">📅 ${n.date}</div><div style="font-size:0.85rem;white-space:pre-wrap;line-height:1.6;">${escapeHtml(n.content)}</div></div><button class="task-btn" onclick="deleteNote(${n.id})">🗑️</button></div></div>`).join('');
+}
+
+function addGoal() {
+  const title = document.getElementById('goalTitle').value.trim();
+  if (!title) return toast('⚠️ اكتب الهدف');
+  state.goals.push({ id: Date.now(), title, measure: document.getElementById('goalMeasure').value.trim(), date: document.getElementById('goalDate').value, done: false });
+  ['goalTitle','goalMeasure','goalDate'].forEach(id => document.getElementById(id).value = '');
+  saveState(); renderGoals(); updateHome();
+  addXP(10);
+  toast('🎯 تمت الإضافة');
+}
+
+function deleteGoal(id) {
+  state.goals = state.goals.filter(g => g.id !== id);
+  saveState(); renderGoals(); updateHome();
+}
+
+function toggleGoal(id) {
+  const g = state.goals.find(x => x.id === id);
+  if (!g) return;
+  g.done = !g.done;
+  if (g.done) { addXP(20); confetti(); }
+  saveState(); renderGoals();
+}
+
+function renderGoals() {
+  const list = document.getElementById('goalsList');
+  if (!list) return;
+  if (!state.goals.length) {
+    list.innerHTML = `<div class="empty"><div class="empty-emoji">🎯</div><p class="empty-text">لا توجد أهداف</p></div>`;
+    return;
+  }
+  list.innerHTML = state.goals.map(g => `<div class="card"><div style="display:flex;gap:10px;align-items:start;"><div class="task-check ${g.done?'checked':''}" onclick="toggleGoal(${g.id})">${g.done?'✓':''}</div><div style="flex:1;"><div style="font-weight:700;margin-bottom:6px;${g.done?'text-decoration:line-through;opacity:0.6;':''}">🎯 ${escapeHtml(g.title)}</div>${g.measure ? `<div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:4px;">📏 ${escapeHtml(g.measure)}</div>` : ''}${g.date ? `<div style="font-size:0.8rem;color:var(--text-muted);">⏰ ${g.date}</div>` : ''}</div><button class="task-btn" onclick="deleteGoal(${g.id})">🗑️</button></div></div>`).join('');
+}
+
+function addShopItem() {
+  const item = document.getElementById('shopItem').value.trim();
+  const price = parseFloat(document.getElementById('shopPrice').value) || 0;
+  const cat = document.getElementById('shopCat').value;
+  if (!item) return toast('⚠️ اكتب العنصر');
+  state.shopping.push({ id: Date.now(), item, price, cat, bought: false });
+  document.getElementById('shopItem').value = '';
+  document.getElementById('shopPrice').value = '';
+  saveState(); renderShopping();
+  toast('✅ تمت الإضافة');
+}
+
+function toggleShopItem(id) {
+  const s = state.shopping.find(x => x.id === id);
+  if (s) s.bought = !s.bought;
+  saveState(); renderShopping();
+}
+
+function deleteShopItem(id) {
+  state.shopping = state.shopping.filter(s => s.id !== id);
+  saveState(); renderShopping();
+}
+
+function renderShopping() {
+  const list = document.getElementById('shopList');
+  const cats = { supplies:'📚', clothes:'👕', books:'📖', stationery:'✏️', other:'📌' };
+  if (!list) return;
+  if (!state.shopping.length) {
+    list.innerHTML = `<div class="empty"><div class="empty-emoji">🛒</div><p class="empty-text">القائمة فارغة</p></div>`;
+    document.getElementById('shopTotal').textContent = '0';
+    return;
+  }
+  list.innerHTML = state.shopping.map(s => `<div class="task ${s.bought?'done':''}"><div class="task-check ${s.bought?'checked':''}" onclick="toggleShopItem(${s.id})">${s.bought?'✓':''}</div><div class="task-body"><div class="task-text">${cats[s.cat]} ${escapeHtml(s.item)}</div><div class="task-meta"><span>${s.price} دج</span></div></div><button class="task-btn" onclick="deleteShopItem(${s.id})">🗑️</button></div>`).join('');
+  const total = state.shopping.reduce((sum, s) => sum + (s.bought ? 0 : s.price), 0);
+  document.getElementById('shopTotal').textContent = total.toLocaleString();
+}
+
+const MOODS = {
+  happy: { emoji: '😄', label: 'سعيد' }, neutral: { emoji: '😐', label: 'عادي' },
+  sad: { emoji: '😢', label: 'حزين' }, tired: { emoji: '😴', label: 'متعب' },
+  excited: { emoji: '🤩', label: 'متحمس' }, stressed: { emoji: '😰', label: 'متوتر' },
+  angry: { emoji: '😠', label: 'غاضب' }, calm: { emoji: '😌', label: 'هادئ' }
+};
+
+function setMood(mood) {
+  state.moods[todayKey()] = mood;
+  saveState(); renderMoodHistory();
+  addXP(3);
+  toast(`${MOODS[mood].emoji} تم التسجيل`);
+}
+
+function renderMoodHistory() {
+  const list = document.getElementById('moodHistory');
+  if (!list) return;
+  const entries = Object.entries(state.moods).sort((a, b) => b[0].localeCompare(a[0])).slice(0, 7);
+  if (!entries.length) {
+    list.innerHTML = `<p style="text-align:center;color:var(--text-muted);font-size:0.75rem;">لم تسجل مزاجك بعد</p>`;
+    return;
+  }
+  list.innerHTML = entries.map(([date, mood]) => `<div class="task" style="padding:10px;"><div class="task-body"><div class="task-text">${MOODS[mood]?.emoji || '😊'} ${MOODS[mood]?.label || mood}</div><div class="task-meta"><span>${date}</span></div></div></div>`).join('');
+}
+
+function addBook() {
+  const title = document.getElementById('bookTitle').value.trim();
+  const author = document.getElementById('bookAuthor').value.trim();
+  const pages = parseInt(document.getElementById('bookPages').value) || 0;
+  if (!title) return toast('⚠️ اكتب العنوان');
+  state.books.push({ id: Date.now(), title, author, pages, done: false });
+  ['bookTitle','bookAuthor','bookPages'].forEach(id => document.getElementById(id).value = '');
+  saveState(); renderBooks();
+  addXP(5);
+  toast('📚 تمت الإضافة');
+}
+
+function deleteBook(id) {
+  state.books = state.books.filter(b => b.id !== id);
+  saveState(); renderBooks();
+}
+
+function toggleBook(id) {
+  const b = state.books.find(x => x.id === id);
+  if (b) b.done = !b.done;
+  saveState(); renderBooks();
+  if (b && b.done) { addXP(20); confetti(); }
+}
+
+function renderBooks() {
+  const list = document.getElementById('booksList');
+  if (!list) return;
+  if (!state.books.length) {
+    list.innerHTML = `<div class="empty"><div class="empty-emoji">📚</div><p class="empty-text">لا توجد كتب</p></div>`;
+    return;
+  }
+  list.innerHTML = state.books.map(b => `<div class="task ${b.done?'done':''}"><div class="task-check ${b.done?'checked':''}" onclick="toggleBook(${b.id})">${b.done?'✓':''}</div><div class="task-body"><div class="task-text">📖 ${escapeHtml(b.title)}</div><div class="task-meta">${b.author ? `<span>✍️ ${escapeHtml(b.author)}</span>` : ''}${b.pages ? `<span>📄 ${b.pages} صفحة</span>` : ''}</div></div><button class="task-btn" onclick="deleteBook(${b.id})">🗑️</button></div>`).join('');
+}
+
+const ACHIEVEMENTS = [
+  { id: 'first_task', name: 'البداية!', icon: '🎯', desc: 'أكملت أول مهمة', check: () => state.tasks.some(t => t.done) },
+  { id: 'ten_tasks', name: 'منتج', icon: '⚡', desc: 'أكملت 10 مهام', check: () => state.tasks.filter(t => t.done).length >= 10 },
+  { id: 'fifty_tasks', name: 'محترف', icon: '🏆', desc: 'أكملت 50 مهمة', check: () => state.tasks.filter(t => t.done).length >= 50 },
+  { id: 'first_goal', name: 'الحالم', icon: '🎯', desc: 'أضفت أول هدف', check: () => state.goals.length >= 1 },
+  { id: 'water_master', name: 'سيد الماء', icon: '💧', desc: '8 أكواب في يوم', check: () => Object.values(state.water).some(w => w.length === 8) },
+  { id: 'focus_10', name: 'المركّز', icon: '🍅', desc: '10 جلسات تركيز', check: () => state.sessions.length >= 10 },
+  { id: 'streak_7', name: 'مثابر', icon: '🔥', desc: '7 أيام متواصلة', check: () => (state.streak || 0) >= 7 },
+  { id: 'grade_a', name: 'متفوق', icon: '🥇', desc: 'معدل A', check: () => {
+    if (!state.grades.length) return false;
+    const avg = state.grades.reduce((s, g) => s + (g.score / g.max) * 20, 0) / state.grades.length;
+    return avg >= 16;
+  }},
+  { id: 'level_5', name: 'خبير', icon: '⭐', desc: 'المستوى 5', check: () => state.level >= 5 },
+  { id: 'note_10', name: 'كاتب', icon: '📝', desc: '10 ملاحظات', check: () => state.notes.length >= 10 }
+];
+
+function renderAchievements() {
+  const list = document.getElementById('achievementsList');
+  if (!list) return;
+  list.innerHTML = ACHIEVEMENTS.map(a => {
+    const unlocked = a.check();
+    return `<div class="task" style="${unlocked ? 'border-right-color:var(--success);' : 'opacity:0.5;'}"><div style="font-size:1.7rem;margin-left:4px;">${a.icon}</div><div class="task-body"><div class="task-text">${a.name} ${unlocked ? '✅' : '🔒'}</div><div class="task-meta"><span>${a.desc}</span></div></div></div>`;
+  }).join('');
+}
+
+function confetti() {
+  const colors = ['#6C63FF', '#FF6584', '#FFB020', '#00C9A7', '#00B8D9', '#8B5CF6'];
+  for (let i = 0; i < 40; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.animationDuration = (2 + Math.random() * 2) + 's';
+    c.style.animationDelay = Math.random() * 0.5 + 's';
+    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 4500);
+  }
+}
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'bsp-pro-backup-' + todayKey() + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('📥 تم التصدير');
+}
+
+function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      state = { ...DEFAULT_STATE, ...data };
+      saveState(); renderAll();
+      toast('✅ تم الاستيراد');
+    } catch (err) { toast('❌ ملف غير صالح'); }
+  };
+  reader.readAsText(file);
+}
+
+function clearAll() {
+  if (!confirm('⚠️ هل أنت متأكد؟')) return;
+  localStorage.removeItem('bsp_v5');
+  location.reload();
+}
+
+function updateStreak() {
+  const today = todayKey();
+  const yesterday = todayKey(new Date(Date.now() - 86400000));
+  if (state.lastVisit === today) return;
+  if (state.lastVisit === yesterday) state.streak = (state.streak || 0) + 1;
+  else state.streak = 1;
+  state.lastVisit = today;
+  saveState();
+}
+
+function renderAll() {
+  renderTasks(); renderCalendar(); renderSessions(); renderHabits();
+  renderWater(); renderFC(); renderGrades(); renderExams(); renderNotes();
+  renderGoals(); renderShopping(); renderMoodHistory(); renderBooks();
+  renderAchievements(); renderSchedule(); renderHomework();
+  renderAttendance(); renderSounds(); renderSummary();
+  updateHome(); updateXPUI(); updateTimerDisplay(); newTip();
+}
+
+function init() {
+  loadState();
+  if (state.theme && state.theme !== 'light') document.documentElement.setAttribute('data-theme', state.theme);
+  updateStreak();
+  renderAll();
+  setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 1200);
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+else init();
+</script>
+
+</body>
+</html>
